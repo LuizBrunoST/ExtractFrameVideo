@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Frame Extractor</title>
+    <link rel="stylesheet" href="css/w3.css">
+    <link rel="stylesheet" href="css/padrao.css">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/toast.class.js"></script>
+    <link rel="stylesheet" href="css/dark-mode.css">
+
+</head>
+<body class="w3-theme-dark">
+    <header class="w3-theme">
+        <nav class="w3-bar w3-theme w3-card-4">
+            <span class="w3-bar-item w3-fonte-bold">EFV</span>
+            <div class="w3-right">
+                <span class="w3-bar-item w3-button" onclick="$('#modal-cad-video').show()"><i class="fa-solid fa-upload"></i></span>
+            </div>
+        </nav>
+        <div class="w3-center">
+            <h4>PRINT OS VIDEOS FAÇIL</h4>
+            <h1 class="w3-xxxlarge w3-animate-bottom">VIDEO FRAME EXTRACTOR</h1>
+        </div>
+    </header>
+
+    <div class="w3-modal" id="modal-cad-video">
+        <div class="w3-modal-content w3-animate-opacity w3-theme-dark">
+            <form id="video-form">
+                <div class="w3-center w3-margin-top w3-margin-bottom">
+                    <p>Enviar um video:</p>
+                    <label for="video-input"><i class="fa-solid fa-video w3-xxxlarge"></i></label>
+                    <input type="file" id="video-input" accept="video/*" required style="display: none;">
+                </div>
+                <footer class="w3-bar w3-theme w3-padding">
+                    <div class="w3-right">
+                        <span class="w3-button w3-red w3-round" onclick="$('#modal-cad-video').hide()">Cancelar</span>
+                        <button class="w3-button w3-theme-action w3-round" type="submit" onclick="$('#modal-cad-video').hide()">Enviar</button>
+                    </div>
+                </footer>
+                
+            </form>
+        </div>
+    </div>
+
+    <main>
+        <div class="w3-row w3-container w3-margin-top">
+            <div class="w3-third w3-container">
+                <video id="video" muted style="width:100%"></video>
+
+                <input class="w3-select" type="range" id="timeline" min="0" step="0.01" value="0">
+                <span id="objeto-video"></span>
+                <canvas id="canvas" style="width:100%;"></canvas>
+            </div>
+            <div class="w3-twothird w3-container">
+                <ul class="w3-ul w3-row" id="image-list"></ul>
+            </div>
+        </div>
+    </main>
+
+    <a class="w3-button w3-circle w3-xlarge w3-display-bottomright w3-margin-right w3-margin-bottom" href="#" title="Voltar para o topo da página" style="position:fixed;"><i class="fa-solid fa-circle-up"></i></a>
+    <script>
+        const videoForm = document.getElementById('video-form');
+        const videoInput = document.getElementById('video-input');
+        const videoElement = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const timeline = document.getElementById('timeline');
+        const imageList = document.getElementById('image-list');
+        let imageIndex = 0;
+
+        videoElement.addEventListener('timeupdate', function () {
+            timeline.value = videoElement.currentTime;
+        });
+
+        timeline.addEventListener('input', function () {
+            videoElement.currentTime = timeline.value;
+        });
+
+        videoForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const file = videoInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function () {
+                    videoElement.src = reader.result;
+                }
+            }
+        });
+
+        videoElement.addEventListener('loadedmetadata', function () {
+            timeline.max = videoElement.duration;
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            canvas.style.display='none';
+        });
+
+        function captureFrame() {
+            ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+            const imageURL = canvas.toDataURL();
+            const listItem = document.createElement('li');
+            const image = document.createElement('img');
+            image.style.width='100%';
+            image.src = imageURL;
+            listItem.appendChild(image);
+            const downloadButton = document.createElement('button');
+            downloadButton.className = 'w3-button w3-theme-d1 w3-block w3-hover-theme';
+            downloadButton.innerHTML = '<i class="fa-solid fa-download"></i> Download';
+            downloadButton.addEventListener('click', function () {
+                downloadImage(imageURL);
+            });
+            listItem.className = 'w3-col s6';
+            listItem.appendChild(downloadButton);
+            imageList.appendChild(listItem);
+        }
+
+        function downloadImage(url) {
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `frame_${imageIndex}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        const extractButton = document.createElement('button');
+        extractButton.innerHTML = '<i class="fa-solid fa-camera"></i> Extrair Frame';
+        extractButton.className = 'w3-button w3-theme-d1 w3-block w3-hover-theme';
+        extractButton.addEventListener('click', function () {
+            captureFrame();
+        });
+        $('#objeto-video').append(extractButton);
+        //document.body.appendChild(extractButton);
+    </script>
+</body>
+</html>
