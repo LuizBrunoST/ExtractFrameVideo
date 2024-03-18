@@ -10,14 +10,16 @@
     <script src="js/jquery-3.6.0.min.js"></script>
     <script src="js/toast.class.js"></script>
     <link rel="stylesheet" href="css/dark-mode.css">
+    <meta name="msapplication-TileColor" content="#0e151a">
+    <meta name="theme-color" content="#0e151a">
 
 </head>
 <body class="w3-theme-dark">
     <header class="w3-theme">
         <nav class="w3-bar w3-theme w3-card-4">
-            <span class="w3-bar-item w3-fonte-bold">EFV</span>
+            <span class="w3-bar-item w3-fonte-bold" style="text-shadow: 0px 1px 2px #000;">EFV</span>
             <div class="w3-right">
-                <span class="w3-bar-item w3-button" onclick="$('#modal-cad-video').show()"><i class="fa-solid fa-upload"></i></span>
+                <span class="w3-bar-item w3-button" onclick="$('#modal-cad-video').show()"><i class="fa-solid fa-upload"></i> Enviar vídeo</span>
             </div>
         </nav>
         <div class="w3-center">
@@ -27,11 +29,11 @@
     </header>
 
     <div class="w3-modal" id="modal-cad-video">
-        <div class="w3-modal-content w3-animate-opacity w3-theme-dark">
+        <div class="w3-modal-content w3-animate-opacity w3-theme-dark w3-card-4">
             <form id="video-form">
                 <div class="w3-center w3-margin-top w3-margin-bottom">
-                    <p>Enviar um video:</p>
-                    <label for="video-input"><i class="fa-solid fa-video w3-xxxlarge"></i></label>
+                    <h3>Enviar um video:</h3>
+                    <label class="w3-button w3-round" for="video-input"><i class="fa-solid fa-video w3-xxxlarge"></i></label>
                     <input type="file" id="video-input" accept="video/*" required style="display: none;">
                 </div>
                 <footer class="w3-bar w3-theme w3-padding">
@@ -50,8 +52,8 @@
             <div class="w3-third w3-container">
                 <video id="video" muted style="width:100%"></video>
 
-                <input class="w3-select" type="range" id="timeline" min="0" step="0.01" value="0">
-                <span id="objeto-video"></span>
+                <input class="w3-range-dark" type="range" id="timeline" min="0" step="0.01" value="0">
+                <span class="w3-margin-top" id="objeto-video"></span>
                 <canvas id="canvas" style="width:100%;"></canvas>
             </div>
             <div class="w3-twothird w3-container">
