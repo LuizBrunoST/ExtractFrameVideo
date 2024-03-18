@@ -53,3 +53,7 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue para r
 ## Licença
 
 Este projeto está licenciado sob a [Licença MIT](LICENSE).
+
+## screenshot
+
+![screencapture-localhost-ExtractFrameVideo-2024-03-18-12_23_35](https://github.com/LuizBrunoST/ExtractFrameVideo/assets/64446877/236586ce-fc2c-4777-9505-917c9c31a11d)
