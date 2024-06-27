@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visualizador de Vídeo</title>
+<style>
+  #video-container {
+    margin: 20px auto;
+    width: 600px;
+  }
+  video {
+    width: 100%;
+  }
+  button {
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+<div id="video-container">
+  <input type="file" id="video-file" accept="video/mp4">
+  <br>
+  <label for="inicio-loop">Início do Loop (segundos):</label>
+  <input type="number" id="inicio-loop" min="0" step="1">
+  <br>
+  <label for="fim-loop">Fim do Loop (segundos):</label>
+  <input type="number" id="fim-loop" min="0" step="1">
+  <br>
+  <video id="video" controls muted autoplay>
+    Seu navegador não suporta a tag de vídeo.
+  </video>
+  <button onclick="repetir()">Repetir Vídeo</button>
+</div>
+
+<script>
+  const video = document.getElementById('video');
+  const inicioLoopInput = document.getElementById('inicio-loop');
+  const fimLoopInput = document.getElementById('fim-loop');
+  let loopInterval;
+
+  function repetir() {
+    const inicioLoop = parseInt(inicioLoopInput.value);
+    const fimLoop = parseInt(fimLoopInput.value);
+
+    if (!isNaN(inicioLoop) && !isNaN(fimLoop) && fimLoop > inicioLoop && video.src) {
+      video.currentTime = inicioLoop; // Define o vídeo para iniciar do tempo inicial do loop
+
+      clearInterval(loopInterval); // Limpa o intervalo anterior, se houver
+
+      loopInterval = setInterval(() => {
+        if (video.currentTime >= fimLoop) {
+          video.currentTime = inicioLoop; // Volta para o início do loop se atingir o tempo final
+        }
+      }, 100); // Verifica a cada 100ms se o vídeo atingiu o tempo final do loop
+    }
+  }
+
+  // Event listener para carregar o vídeo selecionado
+  document.getElementById('video-file').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const objectURL = URL.createObjectURL(file);
+    video.src = objectURL;
+  });
+</script>
+</body>
+</html>

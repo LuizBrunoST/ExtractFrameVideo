@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visualizador de Vídeo</title>
+<style>
+  #video-container {
+    margin: 20px auto;
+    width: 600px;
+  }
+  video {
+    width: 100%;
+  }
+  button {
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+<div id="video-container">
+  <input type="file" id="video-file" accept="video/mp4">
+  <br>
+  <label for="inicio-loop">Início do Loop (segundos):</label>
+  <input type="number" id="inicio-loop" min="0" step="1">
+  <br>
+  <label for="fim-loop">Fim do Loop (segundos):</label>
+  <input type="number" id="fim-loop" min="0" step="1">
+  <br>
+  <video id="video" controls>
+    Seu navegador não suporta a tag de vídeo.
+  </video>
+  <button onclick="repetir()">Repetir Vídeo</button>
+</div>
+
+<script>
+  const video = document.getElementById('video');
+  const inicioLoopInput = document.getElementById('inicio-loop');
+  const fimLoopInput = document.getElementById('fim-loop');
+
+  function repetir() {
+    // Verifica se o vídeo está carregado
+    if (video.src) {
+      const inicioLoop = parseInt(inicioLoopInput.value);
+      const fimLoop = parseInt(fimLoopInput.value);
+
+      // Verifica se o tempo de início e fim do loop são válidos
+      if (!isNaN(inicioLoop) && !isNaN(fimLoop) && fimLoop > inicioLoop) {
+        // Verifica se o vídeo está além do ponto final do loop
+        if (video.currentTime >= fimLoop) {
+          // Volta para o início do loop
+          video.currentTime = inicioLoop;
+        }
+
+        // Se o vídeo está pausado ou está além do ponto final do loop, reproduz
+        if (video.paused || video.currentTime >= fimLoop) {
+          video.play();
+        }
+      } else {
+        alert("Por favor, insira tempos de início e fim válidos.");
+      }
+    } else {
+      alert("Por favor, selecione um arquivo de vídeo.");
+    }
+  }
+
+  // Event listener para carregar o vídeo selecionado
+  document.getElementById('video-file').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const objectURL = URL.createObjectURL(file);
+    video.src = objectURL;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loop Video</title>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="css/w3.css">
+    <link rel="stylesheet" href="css/padrao.css">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <meta name="msapplication-TileColor" content="#0e151a">
+    <meta name="theme-color" content="#0e151a">
+</head>
+<body class="w3-theme-dark">
+    <nav class="w3-bar w3-theme">
+        <span class="w3-bar-item">Loop Video</span>
+    </nav>
+    <div class="w3-content">
+        <div class="w3-row">
+            <div class="w3-third w3-theme">
+                <header class="w3-container">
+                    <h4><b>Editor</b></h4>
+                </header>
+                <nav class="w3-bar-block">
+                    <span class="w3-bar-item w3-center">
+                        <label class="w3-button w3-round" for="video-file">
+                            <i class="fa-solid fa-video"></i>
+                        </label>
+                        <input type="file" id="video-file" accept="video/mp4" style="display:none;">
+                    </span>
+                    <span class="w3-bar-item">
+                        <label for="inicio-loop">Início do Loop (segundos):</label>
+                        <input class="w3-input w3-theme-d1" type="number" id="inicio-loop" min="0" step="1">
+                    </span>
+                    <span class="w3-bar-item">
+                        <label for="fim-loop">Fim do Loop (segundos):</label>
+                        <input class="w3-input w3-theme-d1" type="number" id="fim-loop" min="0" step="1">
+                    </span>
+                    <span class="w3-bar-item w3-button w3-center" onclick="repetir()"><i class="fa-solid fa-rotate-left"></i> Repetir</span>
+                </nav>
+            </div>
+            <div class="w3-twothird w3-black">
+                <header class="w3-container">
+                    <h4><b>Preview</b></h4>
+                </header>
+
+                <video id="video" controls muted autoplay style="width:100%;height:100vh;">
+                    Seu navegador não suporta a tag de vídeo.
+                </video>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>
