@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extrair Frames do Vídeo</title>
+</head>
+<body>
+    <input type="file" id="videoFile" accept="video/*">
+    <button id="extractFrames">Extrair Frames</button>
+    <video id="video" controls style="display: block; max-width: 100%;height: 100vh;"></video>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <div id="statusMessage"></div>
+    <progress id="progressBar" value="0" max="100" style="width: 100%;height: 100vh;"></progress>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

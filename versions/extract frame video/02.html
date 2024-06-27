@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Frame Extractor</title>
+</head>
+<body>
+<form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" accept="video/*" id="videoInput" name="videoFile" required>
+    <button type="submit">Extract Frame</button>
+</form>
+<canvas id="canvas" style="display: none;"></canvas>
+
+<script>
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevenir envio do formulário
+
+        const fileInput = document.getElementById('videoInput');
+        const file = fileInput.files[0];
+
+        if (!file || !file.type.startsWith('video/')) {
+            alert('Por favor, selecione um arquivo de vídeo.');
+            return;
+        }
+
+        const video = document.createElement('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        video.preload = 'metadata';
+        video.onloadedmetadata = function() {
+            canvas.width = this.videoWidth;
+            canvas.height = this.videoHeight;
+
+            // Desenhar o primeiro frame do vídeo no canvas
+            ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+
+            // Converter o conteúdo do canvas para uma imagem
+            const imageURL = canvas.toDataURL();
+            console.log('Frame capturado:', imageURL);
+
+            // Aqui você pode enviar a imageURL para o servidor ou fazer o que desejar com ela
+        };
+
+        video.src = URL.createObjectURL(file);
+        video.load();
+    });
+</script>
+</body>
+</html>

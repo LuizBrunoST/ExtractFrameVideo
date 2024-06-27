@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video to Image</title>
+    <link rel="stylesheet" href="css/w3.css">
+    <link rel="stylesheet" href="css/padrao.css">
+    <style>
+        #video-container {
+            position: relative;
+            width: 600px;
+            margin-bottom: 20px;
+        }
+
+        #canvas {
+            display: none;
+        }
+
+        #image-list {
+            list-style: none;
+            padding: 0;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="video-container">
+        <video id="video" controls>
+            <source src="video_teste.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <input type="range" id="timeline" value="0" step="0.1">
+    </div>
+
+    <button class="w3-button w3-blue" id="frame-btn">Extrair Frame</button>
+    <canvas id="canvas"></canvas>
+    <ul id="image-list"></ul>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const timeline = document.getElementById('timeline');
+        const frameBtn = document.getElementById('frame-btn');
+        const imageList = document.getElementById('image-list');
+        let imageIndex = 0;
+
+        // Espera o vídeo carregar
+        video.addEventListener('loadeddata', function () {
+            // Define o tamanho do canvas para ser igual ao tamanho do vídeo
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            // Define o máximo do valor do controle de timeline para a duração do vídeo
+            timeline.max = video.duration;
+        });
+
+        // Atualiza a posição do vídeo quando a timeline é movida
+        timeline.addEventListener('input', function () {
+            video.currentTime = timeline.value;
+        });
+
+        // Captura o frame atual do vídeo e o converte em imagem
+        frameBtn.addEventListener('click', function () {
+            captureFrame();
+        });
+
+        // Função para capturar e exibir o frame atual do vídeo
+        function captureFrame() {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageURL = canvas.toDataURL(); // Converte o conteúdo do canvas para uma imagem base64
+            const listItem = document.createElement('li');
+            const image = document.createElement('img');
+            image.src = imageURL;
+            listItem.appendChild(image);
+            imageList.appendChild(listItem);
+            imageIndex++;
+        }
+    </script>
+</body>
+
+</html>

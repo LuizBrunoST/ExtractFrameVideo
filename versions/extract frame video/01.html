@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video to Image</title>
+<style>
+    #canvas {
+        display: none;
+    }
+</style>
+</head>
+<body>
+<video id="video" controls>
+    <source src="video_teste.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+<canvas id="canvas"></canvas>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Espera o vídeo carregar
+    video.addEventListener('loadeddata', function() {
+        // Define o tamanho do canvas para ser igual ao tamanho do vídeo
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+    });
+
+    // Captura o frame atual do vídeo e o converte em imagem
+    function captureFrame() {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageURL = canvas.toDataURL(); // Converte o conteúdo do canvas para uma imagem base64
+        // Você pode usar imageURL como src de uma tag de imagem ou para outras finalidades
+        console.log('Frame captured:', imageURL);
+    }
+
+    // Chame a função captureFrame() quando desejar capturar o frame atual do vídeo, por exemplo, quando o usuário clicar em um botão.
+</script>
+</body>
+</html>

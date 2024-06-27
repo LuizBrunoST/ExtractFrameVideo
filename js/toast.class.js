@@ -36,7 +36,7 @@ class Toast {
         `);
         } else {
             div.append(`
-            <div class="w3-white w3-padding w3-border w3-round w3-margin-bottom">
+            <div class="w3-black w3-padding w3-border w3-round w3-margin-bottom">
             <strong>${titulo}</strong>
             <span>${mensagem}</span>
             </div>

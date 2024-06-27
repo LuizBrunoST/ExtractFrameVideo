@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Frame Extractor</title>
+    <style>
+        #canvas {
+            display: none;
+        }
+
+        #image-list {
+            list-style: none;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="video-form">
+        <input type="file" id="video-input" accept="video/*" required>
+        <button type="submit">Enviar</button>
+    </form>
+    <video id="video" controls></video>
+    <input type="range" id="timeline" min="0" step="1" value="0">
+    <canvas id="canvas"></canvas>
+    <ul id="image-list"></ul>
+
+    <script>
+        const videoForm = document.getElementById('video-form');
+        const videoInput = document.getElementById('video-input');
+        const videoElement = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const timeline = document.getElementById('timeline');
+        const imageList = document.getElementById('image-list');
+        let imageIndex = 0;
+
+        videoElement.addEventListener('timeupdate', function () {
+            timeline.value = videoElement.currentTime;
+        });
+
+        timeline.addEventListener('input', function () {
+            videoElement.currentTime = timeline.value;
+        });
+
+        videoForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const file = videoInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function () {
+                    videoElement.src = reader.result;
+                }
+            }
+        });
+
+        videoElement.addEventListener('loadedmetadata', function () {
+            timeline.max = videoElement.duration;
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+        });
+
+        function captureFrame() {
+            ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+            const imageURL = canvas.toDataURL();
+            const listItem = document.createElement('li');
+            const image = document.createElement('img');
+            image.src = imageURL;
+            listItem.appendChild(image);
+            const downloadButton = document.createElement('button');
+            downloadButton.textContent = 'Download';
+            downloadButton.addEventListener('click', function () {
+                downloadImage(imageURL);
+            });
+            listItem.appendChild(downloadButton);
+            imageList.appendChild(listItem);
+        }
+
+        function downloadImage(url) {
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `frame_${imageIndex}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        const extractButton = document.createElement('button');
+        extractButton.textContent = 'Extrair Frame';
+        extractButton.addEventListener('click', function () {
+            captureFrame();
+        });
+        document.body.appendChild(extractButton);
+    </script>
+</body>
+
+</html>
