@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extract Frames Videos</title>
+    <link rel="stylesheet" href="../css/w3.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/padrao.css">
+    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
+    <script src="../js/jquery-3.6.0.min.js"></script>
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <meta name="msapplication-TileColor" content="#0e151a">
+    <meta name="theme-color" content="#0e151a">
+    <script>
+        (function (d, w) {
+            var s = d.createElement("script")
+            s.type = "text/javascript"
+            s.src = "https://www.lumamax.com.br/api/sdkAds/adsmax.js"
+            d.getElementsByTagName('head')[0].appendChild(s)
+        })(document, window)
+    </script>
+</head>
+<body class="w3-theme-d5">
+    <div class="w3-display-bottomleft w3-display-bottomleft w3-block w3-padding w3-margin-bottom" id="msgbox" style="z-index:5;position:fixed;"></div>
+    
+    <!-- MODALS -->
+    
+    <div class="w3-modal" id="modal-cad-video">
+        <div class="w3-modal-content w3-theme w3-animate-opacity w3-round-xlarge w3-card-4" style="overflow: hidden;">
+            <div class="adMax2 w3-margin-top w3-margin-buttom" id="adMax1"></div>
+            <form id="video-form">
+                <div class="w3-center">
+                    <h5>Select the video:</h5>
+                    <p>Select the video to make video photo edits</p>
+                    <label class="w3-button w3-round" for="video-input">
+                        <i class="fa-solid fa-video w3-xxxlarge"></i>
+                    </label>
+                    <input type="file" id="video-input" accept="video/*" required style="display: none;">
+                </div>
+                <br>
+                <footer class="w3-bar w3-theme-d1 w3-padding">
+                    <div class="w3-right">
+                        <span class="w3-red w3-button w3-round" onclick="$('#modal-cad-video').hide()">Cancel</span>
+                        <button class="w3-theme-l2 w3-button w3-round" onclick="$('#modal-cad-video').hide();toast.exibir('sucesso', 'Sucess!', 'Video added successfully..');" type="submit">Submit</button>
+                    </div>
+                </footer>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODALS END -->
+
+    <nav class="w3-bar w3-theme">
+        <span class="w3-bar-item">EFV</span>
+    </nav>
+
+    <div class="adMax1 w3-margin-top w3-margin-buttom" id="adMax1"></div>
+    <main class="w3-margin-top">
+        <div class="w3-row">
+
+            <div class="w3-col w3-third w3-container">
+                <div class="w3-round-xlarge w3-theme" style="overflow: hidden;">
+                    <nav class="w3-bar w3-theme-d1">
+                        <span class="w3-bar-item">Player</span>
+                        <div class="w3-right">
+                            <div class="w3-dropdown-hover w3-right">
+                                <button class="w3-button w3-theme"><i class="fa-solid fa-bars"></i></button>
+                                <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-border-theme w3-theme-d1">
+                                  <a href="javascript:void(0)" class="w3-bar-item w3-button" onclick="$('#modal-cad-video').show()"><i class="fa-solid fa-upload"></i> Import video</a>
+                                  <a href="#extractFrameManual" class="w3-bar-item w3-button" onclick="$('#extractFrameAutomatic').hide();$('#extractFrameManual').toggle()"><i class="fa-solid fa-camera"></i> Extract manual frame</a>
+                                  <a href="#extractFrameAutomatic" class="w3-bar-item w3-button" onclick="$('#extractFrameManual').hide();$('#extractFrameAutomatic').toggle()"><i class="fa-solid fa-camera"></i> Extract automatic frame</a>
+                                </div>
+                              </div>
+                        </div>
+                    </nav>
+                    <br>
+                    <div class="w3-container">
+                        <video id="video" class="w3-round-xlarge" muted style="width:100%;height:100vh;"></video>
+                        <canvas id="canvas" style="width:100%;"></canvas>
+                    </div>
+                    <input class="w3-range-dark" type="range" id="timeline" min="0" step="0.01" value="0">
+                    <nav class="w3-bar">
+                        <span class="w3-bar-item">
+                            <span id="currentTime" class="w3-text-green">00:00:00</span> / 
+                            <span id="duration">00:00:00</span>
+                        </span>
+                        <div class="w3-right">
+                            <span class="w3-bar-item w3-button" id="btn-backward"><i class="fa-solid fa-backward-step"></i></span>
+                            <span class="w3-bar-item w3-button" id="btn-pause" style="display:none;"><i class="fa-solid fa-pause"></i></span>
+                            <span class="w3-bar-item w3-button" id="btn-play"><i class="fa-solid fa-play"></i></span>
+                            <span class="w3-bar-item w3-button" id="btn-forward"><i class="fa-solid fa-forward-step"></i></span>
+                            <span class="w3-bar-item w3-button" id="btn-fullScreen"><i class="fa-solid fa-compress"></i></span>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="w3-col w3-twothird w3-container" id="extractFrameManual" style="display: none;">
+                <div class="w3-round-xlarge w3-theme" style="overflow: hidden; height:100vh;">   
+                    <span class="w3-margin-top" id="objeto-video"></span>
+                    <ul class="w3-ul w3-row" id="image-list" style="overflow-y: scroll; height:calc(100vh - 30px);"></ul>
+                    <div class="adMax1 w3-margin-top w3-margin-buttom" id="adMax1"></div>
+                </div>
+            </div>
+            
+            <div class="w3-col w3-twothird w3-container" id="extractFrameAutomatic" style="display: none;">
+                <div class="w3-round-xlarge w3-theme" style="overflow: hidden;">
+                    <button class="w3-button w3-theme-d1 w3-block w3-hover-theme" id="extractFrames"><i class="fa-solid fa-camera"></i> Extrair Frames</button>
+                    <canvas id="canvasAutomatic" style="display: none;"></canvas>
+                    <div class="adMax1 w3-margin-top w3-margin-buttom" id="adMax1"></div>
+                    <main class="w3-container w3-margin-top">
+                        <div class="w3-theme-l1 w3-card-4">
+                            <div class="w3-container w3-theme-d5 w3-center" id="progressBar" style="width:0;height:5px;"></div>
+                        </div>
+                        <br>
+                        <div class="w3-center">
+                            <div id="statusMessage"></div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="adMax2 w3-margin-top w3-margin-buttom" id="adMax2"></div>
+
+    <a class="w3-button w3-circle w3-xlarge w3-display-bottomright w3-margin-right w3-margin-bottom" href="#"
+        title="Voltar para o topo da página" style="position:fixed;"><i class="fa-solid fa-circle-up"></i></a>
+    <footer>
+
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="../js/toast.class.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
