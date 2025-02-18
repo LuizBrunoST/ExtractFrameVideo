@@ -50,11 +50,11 @@ $(document).ready(function () {
     loadAds();
     let intervalAnuncios = setInterval(() => {
         loadAds();
-    }, 3000);
+    }, 5000);
 
     setTimeout(() => {
         clearInterval(intervalAnuncios);
-    }, 10000);
+    }, 40000);
 });
 
 document.getElementById('videoInput').addEventListener('change', handleFileSelect, false);

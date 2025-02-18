@@ -267,11 +267,11 @@ $(document).ready(function () {
         loadAds();
         let intervalAnuncios = setInterval(() => {
             loadAds();
-        }, 3000);
+        }, 5000);
 
         setTimeout(() => {
             clearInterval(intervalAnuncios);
-        }, 10000);
+        }, 60000);
         
     });
 });
