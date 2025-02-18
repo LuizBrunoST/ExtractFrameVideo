@@ -265,5 +265,13 @@ $(document).ready(function () {
     $(document).ready(function () {
         // Chama a função loadAds() para carregar os anúncios
         loadAds();
+        let intervalAnuncios = setInterval(() => {
+            loadAds();
+        }, 3000);
+
+        setTimeout(() => {
+            clearInterval(intervalAnuncios);
+        }, 10000);
+        
     });
 });

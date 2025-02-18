@@ -26,6 +26,10 @@ function loadAds() {
         {
             url: 'https://lumamax.com.br/api/sdkAds/ads?id_usuario=1&site=8&id_bloco=20',
             divClass: '.adMax2'
+        },
+        {
+            url: 'https://lumamax.com.br/api/sdkAds/ads?id_usuario=1&site=8&id_bloco=20',
+            divClass: '.adMax1'
         }
         // Adicione mais objetos URL/divClass conforme necessário
     ];
@@ -44,6 +48,13 @@ function loadAds() {
 $(document).ready(function () {
     // Chama a função loadAds() para carregar os anúncios
     loadAds();
+    let intervalAnuncios = setInterval(() => {
+        loadAds();
+    }, 3000);
+
+    setTimeout(() => {
+        clearInterval(intervalAnuncios);
+    }, 10000);
 });
 
 document.getElementById('videoInput').addEventListener('change', handleFileSelect, false);
